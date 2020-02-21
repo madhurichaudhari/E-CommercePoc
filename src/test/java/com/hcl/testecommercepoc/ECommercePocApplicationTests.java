@@ -1,4 +1,4 @@
-package com.hcl.ecom.testecommercepoc;
+package com.hcl.testecommercepoc;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

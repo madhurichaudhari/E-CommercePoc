@@ -1,4 +1,4 @@
-package com.hcl.ecom.ecommercepoc;
+package com.hcl.ecommercepoc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
