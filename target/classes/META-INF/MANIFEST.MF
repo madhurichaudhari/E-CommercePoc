@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: E-CommercePoc
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: MadhuriC
+Built-By: praveen.verma
 Implementation-Vendor-Id: com.hcl.ecom.EcommercePoc
-Build-Jdk: 1.8.0_211
+Build-Jdk: 1.8.0_45
 Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
  ot-starter-parent/E-CommercePoc
 Created-By: Maven Integration for Eclipse
