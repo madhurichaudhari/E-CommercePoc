@@ -29,10 +29,7 @@
 		</dependency>
 		<!-- used for security of services -->
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
+		
 		<!-- used for monitor to micro services status -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -57,6 +54,17 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.6.1</version>
 		</dependency>
+		   <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
+        </dependency>
+        
+         <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.10</version>
+        <scope>provided</scope>
+    </dependency>
 	</dependencies>
 	<!-- used for manage the version of services -->
 
