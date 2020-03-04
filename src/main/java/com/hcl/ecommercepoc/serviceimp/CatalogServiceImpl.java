@@ -4,38 +4,38 @@ package com.hcl.ecommercepoc.serviceimp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hcl.ecommercepoc.entities.ProductOrders;
-import com.hcl.ecommercepoc.repositories.OrderRepository;
-import com.hcl.ecommercepoc.services.OrderService;
+import com.hcl.ecommercepoc.entities.CatalogEntity;
+import com.hcl.ecommercepoc.repositories.CatalogRepository;
+import com.hcl.ecommercepoc.services.CatalogService;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-public class OrderServiceImpl implements OrderService {
+public class CatalogServiceImpl implements CatalogService {
 
     @Autowired
-    private OrderRepository orderRepository;
+    private CatalogRepository orderRepository;
 
     @Override
-    public Mono<ProductOrders> createOrder(ProductOrders productOrders) {
+    public Mono<CatalogEntity> addProduct(CatalogEntity productOrders) {
         return orderRepository.save(productOrders);
     }
 
     @Override
-    public Flux<ProductOrders> findAll() {
+    public Flux<CatalogEntity> findAll() {
         return orderRepository.findAll();
     }
 
     @Override
-    public Mono<ProductOrders> updateOrder(ProductOrders productOrders, String id) {
+    public Mono<CatalogEntity> updateProduct(CatalogEntity productOrders, String id) {
         return findOne(id).doOnSuccess(productOrders1 -> {
           orderRepository.save(productOrders).subscribe();
         });
     }
 
     @Override
-    public Mono<ProductOrders> findOne(String id) {
+    public Mono<CatalogEntity> findOne(String id) {
         return orderRepository.findById(id).
                 switchIfEmpty(Mono.error(new Exception("No Product found with Id: " + id)));
     }
@@ -44,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
     
     
     @Override
-	public Flux<ProductOrders> findById(String Id) {
+	public Flux<CatalogEntity> findById(String Id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
