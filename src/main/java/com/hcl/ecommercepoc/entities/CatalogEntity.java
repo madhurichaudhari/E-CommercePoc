@@ -6,16 +6,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author MadhuriC
  *
  */
-@Document(collection = "Catalog")
+@Document(collection = "Catalog_tbl")
 public class CatalogEntity  {
-	
-	
-	
-	
+
 	@Id 
     private String productId;
 	
-    private String productSKU;
+   
   
     private String productName;
    
@@ -34,12 +31,7 @@ public class CatalogEntity  {
 	public void setProductId(String productId) {
 		this.productId = productId;
 	}
-	public String getProductSKU() {
-		return productSKU;
-	}
-	public void setProductSKU(String productSKU) {
-		this.productSKU = productSKU;
-	}
+	
 	public String getProductName() {
 		return productName;
 	}
