@@ -26,28 +26,6 @@ import reactor.core.publisher.Mono;
 public class CategoryController {
 	
 
-    @Autowired
-    private CatalogService orderService;
-    @Autowired
-  	private DiscoveryClient discoveryClient;
-    
-    @Autowired
-    com.hcl.ecommercepoc.utils.Configuration configuration;
-    
-    private static final Logger log=LoggerFactory.getLogger(ECommercePocApplication.class);
-
-    @PostMapping("/createOrder")
-    public Mono<CatalogEntity> create(@RequestBody CatalogEntity productOrders) {
-        log.debug("create Order with Order : {}", productOrders);
-        return orderService.addProduct(productOrders);
-    }
-    
-    
-    @GetMapping("/getAllOrder")
-    public Flux<CatalogEntity> findAll() {
-        log.debug("findAll getAllOrder");
-        return orderService.findAll();
-    }
    
     
 }

@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties("catalogue-service")
+@ConfigurationProperties("catalog-service")
 public class Configuration {
 
 	private int maximum;

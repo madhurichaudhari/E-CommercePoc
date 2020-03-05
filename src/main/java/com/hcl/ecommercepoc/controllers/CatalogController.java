@@ -1,6 +1,8 @@
 package com.hcl.ecommercepoc.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+
 import com.hcl.ecommercepoc.entities.CatalogEntity;
 import com.hcl.ecommercepoc.services.CatalogService;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,14 +24,16 @@ import reactor.core.publisher.Mono;
 /**
  * @author MadhuriC Created CatalogController through manage Catalog .
  */
+@Component
 @RestController
-@RequestMapping("e-commerce/Catalog")
+@RequestMapping(value = "e-commerce/Catalog",produces = MediaType.APPLICATION_JSON_VALUE)
 public class CatalogController {
 
 	@Autowired
 	private CatalogService productService;
-	@Autowired
-	com.hcl.ecommercepoc.utils.Configuration configuration;
+	/*
+	 * @Autowired com.hcl.ecommercepoc.utils.Configuration configuration;
+	 */
 
 	/**
 	 *  This api is used for add  product  of catalog
@@ -91,10 +96,10 @@ public class CatalogController {
 	 * @return  data
 	 */
 
-	@GetMapping("/getConfig")
-	public String demo() {
-		return "madhuri" + configuration.getMaximum();
-	}
+	/*
+	 * @GetMapping("/getConfig") public String demo() { return "madhuri" +
+	 * configuration.getMaximum(); }
+	 */
 
 	/**
 	 * This api is used for checking connection data from APi Gateway
@@ -109,15 +114,14 @@ public class CatalogController {
 	 * This api is used for getting data from APi Gateway
 	 * @return it will return data for Jull Api
 	 */
-	@GetMapping("/getZuulTest")
-	public String getProducerTest() {
-		String baseUrl = "http://10.110.244.179:8011/producer/jullTest";
-		System.out.println("baseUrl>>>>>>" + baseUrl);
-		RestTemplate restTemplate = new RestTemplate();
-		String data = restTemplate.getForObject(baseUrl, String.class);
-		System.out.println("dataDemo>>>>>>" + data);
-		return data;
-
-	}
+	/*
+	 * @GetMapping("/getZuulTest") public String getProducerTest() { String baseUrl
+	 * = "http://10.110.244.179:8011/producer/jullTest";
+	 * System.out.println("baseUrl>>>>>>" + baseUrl); RestTemplate restTemplate =
+	 * new RestTemplate(); String data = restTemplate.getForObject(baseUrl,
+	 * String.class); System.out.println("dataDemo>>>>>>" + data); return data;
+	 * 
+	 * }
+	 */
 
 }
