@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -20,7 +21,7 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class ECommercePocApplication implements CommandLineRunner {
+public class ECommercePocApplication  extends SpringBootServletInitializer  {
 	
 	
 
@@ -28,9 +29,7 @@ public class ECommercePocApplication implements CommandLineRunner {
 		SpringApplication.run(ECommercePocApplication.class, args);
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
-	}
+	
 	
 	
 	

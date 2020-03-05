@@ -102,7 +102,7 @@ public class CatalogController {
 	 */
 	@GetMapping("/getTest")
 	public String demoTest() {
-		return "madhuri will be tested api";
+		return "200";
 	}
 
 	/**

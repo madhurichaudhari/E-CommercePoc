@@ -24,6 +24,7 @@
 		<project.reporting.outputEncoding>UTF-8
 		</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		 <maven.test.skip>true</maven.test.skip>
 	</properties>
 
 	<dependencies>
@@ -47,7 +48,7 @@
 
 		<!-- used for monitor to micro services status -->
 		<!-- exclude junit 4 -->
-		<dependency>
+	      <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -58,7 +59,8 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
+		
+		
 		<!-- junit 5 -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -70,6 +72,9 @@
 			<artifactId>junit-jupiter-engine</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		
+		
 		<!-- used for monitor to micro services status -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
