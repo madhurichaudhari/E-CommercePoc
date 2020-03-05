@@ -45,7 +45,7 @@ class CatalogControllerTest {
 	                .thenReturn(Mono.just(user));
 
 	        webTestClient.get()
-	                .uri("/e-commerce/Catalog/fetchProductDetails/{productId}"+user.getProductId())
+	                .uri("/e-commerce/Catalog/fetchProductDetails/"+user.getProductId())
 	                .exchange()
 	                .expectStatus().isOk();
 	    }
@@ -71,7 +71,7 @@ class CatalogControllerTest {
 	 @Test
 	    public void delete() {
 		 CatalogEntity user = new CatalogEntity();
-			user.setProductId("1233333333333");
+			user.setProductId("1");
 			user.setProductDescription("AB");
 	        Mockito.when(userService.findById(user.getProductId()))
 	                .thenReturn(Flux.just(user));
@@ -79,7 +79,7 @@ class CatalogControllerTest {
 	                .thenReturn(Mono.empty());
 
 	        webTestClient.delete()
-	                .uri("/e-commerce/Catalog/deleteProduct/{productId}"+user.getProductId())
+	                .uri("/e-commerce/Catalog/deleteProduct/"+user.getProductId())
 	                .exchange()
 	                .expectStatus().isOk();
 	    }
@@ -97,7 +97,7 @@ class CatalogControllerTest {
 	                .thenReturn(Mono.just(user));
 
 	        webTestClient.put()
-	                .uri("/e-commerce/Catalog/updateProduct/{productId}")
+	                .uri("/e-commerce/Catalog/updateProduct/"+user.getProductId())
 	                .contentType(MediaType.APPLICATION_JSON)
 	                .body(Mono.just(user), CatalogEntity.class)
 	                .exchange()
