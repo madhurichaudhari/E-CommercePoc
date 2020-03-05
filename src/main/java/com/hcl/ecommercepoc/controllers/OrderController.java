@@ -20,7 +20,6 @@ import com.hcl.ecommercepoc.services.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-@Slf4j
 @RestController
 @RequestMapping("/api/v1/Order")
 public class OrderController {
