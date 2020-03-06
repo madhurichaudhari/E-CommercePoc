@@ -2,6 +2,7 @@ package com.hcl.ecommercepoc.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,29 +13,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.hcl.ecommercepoc.entities.CatalogEntity;
 import com.hcl.ecommercepoc.services.CatalogService;
-import org.springframework.http.MediaType;
-
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
  * @author MadhuriC Created CatalogController through manage Catalog .
  */
-@Component
+
 @RestController
-@RequestMapping(value = "e-commerce/Catalog",produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "e-commerce/catalog",produces = MediaType.APPLICATION_JSON_VALUE)
 public class CatalogController {
 
-	@Autowired
-	private CatalogService productService;
+	@Autowired(required=true)
+	private CatalogService catalogService;
 	/*
 	 * @Autowired com.hcl.ecommercepoc.utils.Configuration configuration;
 	 */
 
+	
 	/**
 	 *  This api is used for add  product  of catalog
 	 * @param CatalogEntity
@@ -43,7 +41,7 @@ public class CatalogController {
 	@PostMapping("/addProduct")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Mono<CatalogEntity> addProduct(@RequestBody CatalogEntity catalogEntity) {
-		return productService.addProduct(catalogEntity);
+		return catalogService.addProduct(catalogEntity);
 	}
 	
 	/**
@@ -54,7 +52,7 @@ public class CatalogController {
 	@PutMapping("/updateProduct/{productId}")
 	@ResponseStatus(HttpStatus.OK)
 	public Mono<CatalogEntity> updateProduct(@RequestBody CatalogEntity catalogEntity, @PathVariable String productId) {
-		return productService.updateProduct(catalogEntity, productId);
+		return catalogService.updateProduct(catalogEntity, productId);
 	}
 
 	
@@ -66,7 +64,7 @@ public class CatalogController {
 	@GetMapping("/fetchAllProduct")
 	@ResponseStatus(HttpStatus.OK)
 	public Flux<CatalogEntity> findAll() {
-		return productService.findAll();
+		return catalogService.findAll();
 	}
 
 	/**
@@ -77,7 +75,7 @@ public class CatalogController {
 	@GetMapping("/fetchProductDetails/{productId}")
 	@ResponseStatus(HttpStatus.OK)
 	public Mono<CatalogEntity> findOne(@PathVariable String productId) {
-		return productService.findOne(productId);
+		return catalogService.findOne(productId);
 	}
 	
 	/**
@@ -88,8 +86,9 @@ public class CatalogController {
 	@DeleteMapping("/deleteProduct/{productId}")
 	@ResponseStatus(HttpStatus.OK)
 	public Mono<Boolean> delete(@PathVariable String productId) {
-		return productService.delete(productId);
+		return catalogService.delete(productId);
 	}
+
 	
 	/**
 	 * This api is used for checking connection data from APi Gateway
@@ -109,6 +108,13 @@ public class CatalogController {
 	public String demoTest() {
 		return "200";
 	}
+	
+	
+	@GetMapping("/getQauntity")
+	public Mono<String> getQuntity() {
+		return catalogService.checkInventory();
+	}
+	
 
 	/**
 	 * This api is used for getting data from APi Gateway

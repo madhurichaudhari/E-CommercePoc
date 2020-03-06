@@ -10,12 +10,31 @@ package com.hcl.ecommercepoc.responsemodels;
  *  ResponseModel for getting response for User 
  *
  */
-public class ResponseModel {
+public class InventoryModel {
+	
+	
+	
+	
+	
+	//{"data":{"id":17,"productID":"202","quantity":2},"message":"success","status":true,"statusCode":200}
+
+	
+	
+	
+	
 	
 	private Boolean status;
 	private String message;
-	private Object data;
-	private int code;
+	private QuantityModel data;
+	public QuantityModel getQuantityModel() {
+		return data;
+	}
+
+	public void setQuantityModel(QuantityModel data) {
+		this.data = data;
+	}
+
+	private int statusCode;
 
 	/**
 	 * @return
@@ -45,33 +64,12 @@ public class ResponseModel {
 		this.message = message;
 	}
 
-	/**
-	 * @return
-	 */
-	public Object getData() {
-		return data;
-	}
-
-	/**
-	 * @param data
-	 */
-	public void setData(Object data) {
-		this.data = data;
-	}
+	
 
 	/**
 	 * @return
 	 */
-	public int getErrorCode() {
-		return code;
-	}
-
-	/**
-	 * @param errorCode
-	 */
-	public void setErrorCode(int errorCode) {
-		this.code = errorCode;
-	}
+	
 
 	/**
 	 * @param status
@@ -79,12 +77,12 @@ public class ResponseModel {
 	 * @param data
 	 * @param errorCode
 	 */
-	public ResponseModel(Boolean status, String message, Object data, int errorCode) {
+	public InventoryModel(Boolean status, String message, QuantityModel data, int statusCode) {
 		super();
 		this.status = status;
 		this.message = message;
 		this.data = data;
-		this.code = errorCode;
+		this.statusCode = statusCode;
 	}
 	
 	

@@ -11,19 +11,32 @@ public class CatalogEntity  {
 
 	@Id 
     private String productId;
-	
-   
-  
     private String productName;
-   
     private String productDescription;
     private String productPrice;
+    
+	private String quantity;
  
     private String productCategoryId;
  
     private String createdDate;
     private String updatedDate;
     private boolean isDeleted;
+	/*
+	 * private ProductCategoryEntity productCategory;
+	 * 
+	 * public ProductCategoryEntity getProductCategoryEntity() { return
+	 * productCategory; } public void setProductCategoryEntity(ProductCategoryEntity
+	 * productCategoryEntity) { this.productCategory = productCategoryEntity; }
+	 */
+	
+    
+    public String getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(String quantity) {
+		this.quantity = quantity;
+	}
 
 	public String getProductId() {
 		return productId;
