@@ -11,21 +11,22 @@ package com.hcl.ecommercepoc.responsemodels;
  *
  */
 public class InventoryModel {
-	
-	
-	
-	
-	
-	//{"data":{"id":17,"productID":"202","quantity":2},"message":"success","status":true,"statusCode":200}
 
-	
-	
-	
-	
-	
 	private Boolean status;
 	private String message;
 	private QuantityModel data;
+	private int statusCode;
+	
+	
+	/*
+	 * { "data": { "id": 17, "productID": "202", "quantity": 2 }, "message":
+	 * "success", "status": true, "statusCode": 200
+	 */
+	
+	
+	
+	
+	
 	public QuantityModel getQuantityModel() {
 		return data;
 	}
@@ -34,7 +35,7 @@ public class InventoryModel {
 		this.data = data;
 	}
 
-	private int statusCode;
+	
 
 	/**
 	 * @return
@@ -77,18 +78,6 @@ public class InventoryModel {
 	 * @param data
 	 * @param errorCode
 	 */
-	public InventoryModel(Boolean status, String message, QuantityModel data, int statusCode) {
-		super();
-		this.status = status;
-		this.message = message;
-		this.data = data;
-		this.statusCode = statusCode;
-	}
-	
-	
-	
-	
-	
-	
+
 
 }
