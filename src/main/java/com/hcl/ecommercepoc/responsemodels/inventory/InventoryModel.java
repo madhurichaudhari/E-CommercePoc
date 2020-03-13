@@ -1,5 +1,4 @@
-package com.hcl.ecommercepoc.responsemodels;
-
+package com.hcl.ecommercepoc.responsemodels.inventory;
 
 /*
  *  ResponseModel for getting response for User 
@@ -11,6 +10,18 @@ package com.hcl.ecommercepoc.responsemodels;
  *
  */
 public class InventoryModel {
+
+	
+
+	
+
+	/**
+	 * @param status
+	 * @param message
+	 * @param data
+	 * @param errorCode
+	 */
+	
 
 	private Boolean status;
 	private String message;
@@ -65,19 +76,13 @@ public class InventoryModel {
 		this.message = message;
 	}
 
+	@Override
+	public String toString() {
+		return "InventoryModel [status=" + status + ", message=" + message + ", data=" + data + ", statusCode="
+				+ statusCode + "]";
+	}
 	
 
-	/**
-	 * @return
-	 */
-	
-
-	/**
-	 * @param status
-	 * @param message
-	 * @param data
-	 * @param errorCode
-	 */
 
 
 }

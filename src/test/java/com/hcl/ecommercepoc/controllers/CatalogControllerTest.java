@@ -1,4 +1,5 @@
 package com.hcl.ecommercepoc.controllers;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,12 @@ class CatalogControllerTest {
 
 	@Autowired
 	private WebTestClient webTestClient;
-	
+
 	@MockBean
 	private CatalogService catalogService;
 
 	@Test
-	public void addProduct_whenSuccess() {
+	public void addProduct_whenTestSuccess() {
 		CatalogEntity catalogEntity = new CatalogEntity();
 		catalogEntity.setProductId("1");
 		catalogEntity.setProductDescription("AB");
@@ -32,91 +33,77 @@ class CatalogControllerTest {
 				.body(Mono.just(catalogEntity), CatalogEntity.class).exchange().expectStatus().isCreated();
 
 	}
-	
-	
-	/*
-	 * @Test public void addProduct_whenFail() { CatalogEntity user = new
-	 * CatalogEntity(); user.setProductId("1"); user.setProductDescription("AB");
-	 * Mockito.when(userService.addProduct(Mockito.any(CatalogEntity.class))).
-	 * thenReturn(Mono.just(user));
-	 * webTestClient.post().uri("/e-commerce/catalog/addProduct").contentType(
-	 * MediaType.APPLICATION_JSON) .body(Mono.just(user),
-	 * CatalogEntity.class).exchange().expectStatus().isNotFound();
-	 * 
-	 * }
-	 */
-	
-	
-	
-	
-	   @Test
-	    public void getById() {
-		   CatalogEntity user = new CatalogEntity();
-			user.setProductId("1");
-			user.setProductDescription("AB"); 
-	        Mockito.when(catalogService.findOne(user.getProductId()))
-	                .thenReturn(Mono.just(user));
 
-	        webTestClient.get()
-	                .uri("/e-commerce/catalog/fetchProductDetails/"+user.getProductId())
-	                .exchange()
-	                .expectStatus().isOk();
-	    }
+	@Test
+	public void addProduct_whenTestFail() {
+		CatalogEntity catalogEntity = new CatalogEntity();
+		catalogEntity.setProductId("1");
+		catalogEntity.setProductDescription("AB");
+		Mockito.when(catalogService.addProduct(Mockito.any(CatalogEntity.class))).thenReturn((null));
+		webTestClient.post().uri("/e-commerce/catalog/addProduct").contentType(MediaType.APPLICATION_JSON)
+				.body(Mono.just(catalogEntity), CatalogEntity.class).exchange().expectStatus().is5xxServerError();
 
-	    @Test
-	    public void getAll() {
-	    	 CatalogEntity user = new CatalogEntity();
-				user.setProductId("1");
-				user.setProductDescription("AB"); 
-				Mockito.when(catalogService.findAll())
-	                .thenReturn(Flux.just(user));
+	}
 
-	        webTestClient.get()
-	                .uri("/e-commerce/catalog/fetchAllProduct")
-	                .accept(MediaType.APPLICATION_JSON)
-	                .exchange()
-	                .expectStatus().isOk()
-	                .expectBody()
-	                .jsonPath("$.[0].productId").isEqualTo("1");
-	    }
-	
+	@Test
+	public void getById() {
+		CatalogEntity user = new CatalogEntity();
+		user.setProductId("1");
+		user.setProductDescription("AB");
+		Mockito.when(catalogService.findOne(user.getProductId())).thenReturn(Mono.just(user));
 
-	 @Test
-	    public void delete() {
-		 CatalogEntity user = new CatalogEntity();
-			user.setProductId("1");
-			user.setProductDescription("AB");
-	        Mockito.when(catalogService.findById(user.getProductId()))
-	                .thenReturn(Flux.just(user));
-	        Mockito.when(catalogService.delete(user.getProductId()))
-	                .thenReturn(Mono.empty());
+		webTestClient.get().uri("/e-commerce/catalog/fetchProductDetails/" + user.getProductId()).exchange()
+				.expectStatus().isOk();
+	}
 
-	        webTestClient.delete()
-	                .uri("/e-commerce/catalog/deleteProduct/"+user.getProductId())
-	                .exchange()
-	                .expectStatus().isOk();
-	    }
+	@Test
+	public void getAll() {
+		CatalogEntity user = new CatalogEntity();
+		user.setProductId("1");
+		user.setProductDescription("AB");
+		Mockito.when(catalogService.findAll()).thenReturn(Flux.just(user));
 
-	    @Test
-	    public void update() {
-	    	CatalogEntity user = new CatalogEntity();
-			user.setProductId("1");
-			user.setProductDescription("AB");
+		webTestClient.get().uri("/e-commerce/catalog/fetchAllProduct").accept(MediaType.APPLICATION_JSON).exchange()
+				.expectStatus().isOk().expectBody().jsonPath("$.[0].productId").isEqualTo("1");
+	}
 
-	        Mockito.when(catalogService.findById(user.getProductId()))
-	                .thenReturn(Flux.just(user));
+	@Test
+	public void delete() {
+		CatalogEntity user = new CatalogEntity();
+		user.setProductId("1");
+		user.setProductDescription("AB");
+		Mockito.when(catalogService.findById(user.getProductId())).thenReturn(Flux.just(user));
+		Mockito.when(catalogService.delete(user.getProductId())).thenReturn(Mono.empty());
 
-	        Mockito.when(catalogService.updateProduct(user,"1"))
-	                .thenReturn(Mono.just(user));
+		webTestClient.delete().uri("/e-commerce/catalog/deleteProduct/" + user.getProductId()).exchange().expectStatus()
+				.isOk();
+	}
 
-	        webTestClient.put()
-	                .uri("/e-commerce/catalog/updateProduct/"+user.getProductId())
-	                .contentType(MediaType.APPLICATION_JSON)
-	                .body(Mono.just(user), CatalogEntity.class)
-	                .exchange()
-	                .expectStatus().isOk();
+	@Test
+	public void update() {
+		CatalogEntity user = new CatalogEntity();
+		user.setProductId("1");
+		user.setProductDescription("AB");
 
-	    }
+		Mockito.when(catalogService.findById(user.getProductId())).thenReturn(Flux.just(user));
 
-	
+		Mockito.when(catalogService.updateProduct(user, "1")).thenReturn(Mono.just(user));
+
+		webTestClient.put().uri("/e-commerce/catalog/updateProduct/" + user.getProductId())
+				.contentType(MediaType.APPLICATION_JSON).body(Mono.just(user), CatalogEntity.class).exchange()
+				.expectStatus().isOk();
+
+	}
+
+	@Test
+	public void addProduct_whenSuccessTest() {
+		CatalogEntity catalogEntity = new CatalogEntity();
+		catalogEntity.setProductId("1");
+		catalogEntity.setProductDescription("AB");
+		Mockito.when(catalogService.addProduct(Mockito.any(CatalogEntity.class))).thenReturn(Mono.just(catalogEntity));
+		webTestClient.post().uri("/e-commerce/catalog/bizagi/sendmsg").contentType(MediaType.APPLICATION_JSON)
+				.body(Mono.just(catalogEntity), CatalogEntity.class).exchange().expectStatus().isCreated();
+
+	}
+
 }

@@ -1,4 +1,4 @@
-package com.hcl.ecommercepoc.responsemodels;
+package com.hcl.ecommercepoc.responsemodels.inventory;
 
 
 /*
@@ -13,6 +13,10 @@ package com.hcl.ecommercepoc.responsemodels;
 public class QuantityModel {
 	
 	
+	
+
+
+
 	private int id;
 	private int quantity;
 	private String productID;
@@ -49,6 +53,11 @@ public class QuantityModel {
 
 	public void setProductID(String productID) {
 		this.productID = productID;
+	}
+	
+	@Override
+	public String toString() {
+		return "QuantityModel [id=" + id + ", quantity=" + quantity + ", productID=" + productID + "]";
 	}
 
 }

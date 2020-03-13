@@ -10,12 +10,20 @@ package com.hcl.ecommercepoc.responsemodels;
  *  ResponseModel for getting response for User 
  *
  */
-public class ResponseModel {
+public class ApiResponseModel {
 	
 	private Boolean status;
 	private String message;
 	private Object data;
-	private int code;
+	public int getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(int statusCode) {
+		this.statusCode = statusCode;
+	}
+
+	private int statusCode;
 
 	/**
 	 * @return
@@ -62,29 +70,20 @@ public class ResponseModel {
 	/**
 	 * @return
 	 */
-	public int getErrorCode() {
-		return code;
-	}
 
-	/**
-	 * @param errorCode
-	 */
-	public void setErrorCode(int errorCode) {
-		this.code = errorCode;
-	}
 
 	/**
 	 * @param status
 	 * @param message
 	 * @param data
-	 * @param errorCode
+	 * @param statusCode
 	 */
-	public ResponseModel(Boolean status, String message, Object data, int errorCode) {
+	public ApiResponseModel(Boolean status, String message, Object data, int statusCode) {
 		super();
 		this.status = status;
 		this.message = message;
 		this.data = data;
-		this.code = errorCode;
+		this.statusCode = statusCode;
 	}
 	
 	
