@@ -32,7 +32,16 @@ public class CatalogServiceImpl implements CatalogService {
 	}
 
 	@Override
-	public Flux<CatalogEntity> findAll() {
+	public Flux<CatalogEntity> findAllProduct() {
+		
+		return catalogRepository.findAll();
+	}
+	
+	
+	
+	public   Flux<CatalogEntity> findAllProductTest(){
+		
+		
 		List<InventoryDetails> inventoryList = checkAllInventoryQuantity();
 		Flux<CatalogEntity> catalogList = null;
 		for (int i = 0; i < inventoryList.size(); i++) {
@@ -48,7 +57,7 @@ public class CatalogServiceImpl implements CatalogService {
 
 		catalogRepository.saveAll(catalogList);
 		return catalogList;
-		//return catalogRepository.findAll();
+		
 	}
 
 	@Override

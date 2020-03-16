@@ -16,7 +16,7 @@ public interface CatalogService {
 
     Mono<CatalogEntity> updateProduct(CatalogEntity createOrders, String id);
 
-    Flux<CatalogEntity> findAll();
+    Flux<CatalogEntity> findAllProduct();
 
     Mono<CatalogEntity> findOne(String id);
 

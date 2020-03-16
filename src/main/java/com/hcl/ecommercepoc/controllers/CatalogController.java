@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ import com.hcl.ecommercepoc.entities.CatalogEntity;
 import com.hcl.ecommercepoc.responsemodels.ApiResponseModel;
 import com.hcl.ecommercepoc.services.CatalogService;
 import com.hcl.ecommercepoc.utils.AppConstant;
+import com.hcl.ecommercepoc.utils.CommonUtil;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -32,12 +34,15 @@ public class CatalogController {
 
 	@Autowired(required = true)
 	private CatalogService catalogService;
+
 	/*
 	 * @Autowired com.hcl.ecommercepoc.utils.Configuration configuration;
 	 */
 
 	/**
 	 * This api is used for add product of catalog
+	 * 
+	 * @param catalogEntity
 	 * 
 	 * @param CatalogEntity
 	 * @return Mono<CatalogEntity>
@@ -60,16 +65,16 @@ public class CatalogController {
 	 */
 
 	@PutMapping("/updateProduct/{productId}")
-	public  Mono<ResponseEntity<?>> updateProduct(@RequestBody CatalogEntity catalogEntity, @PathVariable String productId) {
-		//return catalogService.updateProduct(catalogEntity, productId);
-		Mono<CatalogEntity> catalogData =catalogService.updateProduct(catalogEntity, productId);
+	public Mono<ResponseEntity<?>> updateProduct(@RequestBody CatalogEntity catalogEntity,
+			@PathVariable String productId) {
+		// return catalogService.updateProduct(catalogEntity, productId);
+		Mono<CatalogEntity> catalogData = catalogService.updateProduct(catalogEntity, productId);
 		return catalogData.map(t -> {
 			return new ResponseEntity<Object>(new ApiResponseModel(true, AppConstant.PRODUCT_UPDATED, t, 200),
 					HttpStatus.OK);
 
 		});
-		
-		
+
 	}
 
 	/**
@@ -79,15 +84,11 @@ public class CatalogController {
 	 */
 
 	@GetMapping("/fetchAllProduct")
-	public  Flux<ResponseEntity<?>> findAll() {
-		//return catalogService.findAll();
-		
-		Flux<CatalogEntity> catalogData =catalogService.findAll();
-		return catalogData.map(t -> {
-			return new ResponseEntity<Object>(new ApiResponseModel(true, AppConstant.PRODUCT_FETCH, t, 200),
-					HttpStatus.OK);
+	public Flux<CatalogEntity> findAll() {
+		// return catalogService.findAll();
 
-		});
+		Flux<CatalogEntity> catalogData = catalogService.findAllProduct();
+		return catalogData;
 		
 	}
 
@@ -98,17 +99,16 @@ public class CatalogController {
 	 */
 
 	@GetMapping("/fetchProductDetails/{productId}")
-	public  Mono<ResponseEntity<?>> findOne(@PathVariable String productId) {
-		//return catalogService.findOne(productId);
-		
+	public Mono<ResponseEntity<?>> findOne(@PathVariable String productId) {
+		// return catalogService.findOne(productId);
+
 		Mono<CatalogEntity> catalogData = catalogService.findOne(productId);
 		return catalogData.map(t -> {
 			return new ResponseEntity<Object>(new ApiResponseModel(true, AppConstant.PRODUCT_FETCH_DETAILS, t, 200),
 					HttpStatus.OK);
 
 		});
-		
-		
+
 	}
 
 	/**
@@ -120,14 +120,15 @@ public class CatalogController {
 	@DeleteMapping("/deleteProduct/{productId}")
 	@ResponseStatus(HttpStatus.OK)
 	public Mono<ResponseEntity<?>> delete(@PathVariable String productId) {
-		//return catalogService.delete(productId);
+		// return catalogService.delete(productId);
 		Mono<Boolean> catalogData = catalogService.delete(productId);
+		
 		return catalogData.map(t -> {
 			return new ResponseEntity<Object>(new ApiResponseModel(true, AppConstant.PRODUCT_DELETED, t, 200),
 					HttpStatus.OK);
 
 		});
-	}
+		}
 
 	/**
 	 * This api is used for checking connection data from APi Gateway
@@ -156,18 +157,29 @@ public class CatalogController {
 	}
 
 	/**
+	 * @param token
 	 * @param bizagiPost
 	 * @return
 	 */
 	@PostMapping(value = "/bizagi/sendmsg")
-	public Mono<ResponseEntity<?>> sendMessageToQueue(@RequestBody CatalogEntity bizagiPost) {
-		Mono<CatalogEntity> catalogEntity = catalogService.addProduct(bizagiPost);
+	public ResponseEntity<Mono<?>> sendMessageToQueue(@RequestHeader("Authorization") String token,
+			@RequestBody CatalogEntity bizagiPost) {
+         System.out.println("token::" + token);
+		boolean tokenStatus = CommonUtil.validateToken(token);
 
-		return catalogEntity.map(t -> {
-			return new ResponseEntity<Object>(new ApiResponseModel(true, AppConstant.PRODUCT_ADDED, t, 200),
-					HttpStatus.CREATED);
+		if (tokenStatus) {
+			Mono<CatalogEntity> catalogData = catalogService.addProduct(bizagiPost);
+			   return new ResponseEntity<>(Mono.just(new ApiResponseModel(true, AppConstant.PRODUCT_DELETED, catalogData, 200)), HttpStatus.OK);
 
-		});
+	
+		}
+		else {
+				  
+			  // return new ResponseEntity<>(Mono.just(new Life()), HttpStatus.I_AM_A_TEAPOT);
+			   return new ResponseEntity<>(Mono.just(new ApiResponseModel(true, AppConstant.PRODUCT_DELETED, null, 500)), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	
+
 	}
 
 	/**

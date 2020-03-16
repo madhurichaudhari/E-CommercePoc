@@ -28,6 +28,7 @@ public class AppConstant {
 	public static final String IN_STOCK = "In Stock";
 	public static final String OUT_OF_STOCK = "Out Of Stock";
 	public static final String PRODUCT_IS_NOT_CATALOG = "NO Product Available";
+	public static final String TOKEN_EXPIRED = "Token has  Expired";
 	
 
 }

@@ -24,7 +24,7 @@ class CatalogControllerTest {
 	private CatalogService catalogService;
 
 	@Test
-	public void addProduct_whenTestSuccess() {
+	public void testAddProduct_whenSuccess() {
 		CatalogEntity catalogEntity = new CatalogEntity();
 		catalogEntity.setProductId("1");
 		catalogEntity.setProductDescription("AB");
@@ -35,7 +35,7 @@ class CatalogControllerTest {
 	}
 
 	@Test
-	public void addProduct_whenTestFail() {
+	public void testaddProduct_whenFail() {
 		CatalogEntity catalogEntity = new CatalogEntity();
 		catalogEntity.setProductId("1");
 		catalogEntity.setProductDescription("AB");
@@ -46,53 +46,98 @@ class CatalogControllerTest {
 	}
 
 	@Test
-	public void getById() {
-		CatalogEntity user = new CatalogEntity();
-		user.setProductId("1");
-		user.setProductDescription("AB");
-		Mockito.when(catalogService.findOne(user.getProductId())).thenReturn(Mono.just(user));
+	public void testFetchProduct_whenSuccess() {
+		CatalogEntity catalogEntity = new CatalogEntity();
+		catalogEntity.setProductId("1");
+		catalogEntity.setProductDescription("AB");
+		Mockito.when(catalogService.findOne(catalogEntity.getProductId())).thenReturn(Mono.just(catalogEntity));
 
-		webTestClient.get().uri("/e-commerce/catalog/fetchProductDetails/" + user.getProductId()).exchange()
+		webTestClient.get().uri("/e-commerce/catalog/fetchProductDetails/" + catalogEntity.getProductId()).exchange()
 				.expectStatus().isOk();
 	}
+	
+	@Test
+	public void testFetchProduct_whenFail() {
+		CatalogEntity catalogEntity = new CatalogEntity();
+		catalogEntity.setProductId("1");
+		catalogEntity.setProductDescription("AB");
+		Mockito.when(catalogService.findOne(catalogEntity.getProductId())).thenReturn(null);
+
+		webTestClient.get().uri("/e-commerce/catalog/fetchProductDetails/" + catalogEntity.getProductId()).exchange()
+				.expectStatus().is5xxServerError();
+	}
+	
 
 	@Test
-	public void getAll() {
-		CatalogEntity user = new CatalogEntity();
-		user.setProductId("1");
-		user.setProductDescription("AB");
-		Mockito.when(catalogService.findAll()).thenReturn(Flux.just(user));
-
-		webTestClient.get().uri("/e-commerce/catalog/fetchAllProduct").accept(MediaType.APPLICATION_JSON).exchange()
+	public void testFetchAllProduct_whenSuccess() {
+		CatalogEntity catalogEntity = new CatalogEntity();
+		catalogEntity.setProductId("1");
+		catalogEntity.setProductDescription("AB");
+		Mockito.when(catalogService.findAllProduct()).thenReturn(Flux.just(catalogEntity));
+		webTestClient.get().uri("/e-commerce/catalog/fetchAllProduct/").accept(MediaType.APPLICATION_JSON).exchange()
 				.expectStatus().isOk().expectBody().jsonPath("$.[0].productId").isEqualTo("1");
 	}
-
 	@Test
-	public void delete() {
-		CatalogEntity user = new CatalogEntity();
-		user.setProductId("1");
-		user.setProductDescription("AB");
-		Mockito.when(catalogService.findById(user.getProductId())).thenReturn(Flux.just(user));
-		Mockito.when(catalogService.delete(user.getProductId())).thenReturn(Mono.empty());
-
-		webTestClient.delete().uri("/e-commerce/catalog/deleteProduct/" + user.getProductId()).exchange().expectStatus()
-				.isOk();
+	public void testFetchAllProduct_whenFail() {
+		
+		Mockito.when(catalogService.findAllProduct()).thenReturn(null);
+		
+		webTestClient.get().uri("/e-commerce/catalog/fetchAllProduct").accept(MediaType.APPLICATION_JSON).exchange()
+		.expectStatus().isOk().expectBody().equals("[]");
 	}
 
 	@Test
-	public void update() {
-		CatalogEntity user = new CatalogEntity();
-		user.setProductId("1");
-		user.setProductDescription("AB");
+	public void testDeleteProduct_whenSuccess() {
+		CatalogEntity catalogEntity = new CatalogEntity();
+		catalogEntity.setProductId("1");
+		catalogEntity.setProductDescription("AB");
+		Mockito.when(catalogService.findById(catalogEntity.getProductId())).thenReturn(Flux.just(catalogEntity));
+		Mockito.when(catalogService.delete(catalogEntity.getProductId())).thenReturn(Mono.empty());
 
-		Mockito.when(catalogService.findById(user.getProductId())).thenReturn(Flux.just(user));
+		webTestClient.delete().uri("/e-commerce/catalog/deleteProduct/" + catalogEntity.getProductId()).exchange().expectStatus()
+				.isOk();
+	}
+	@Test
+	public void testDeleteProduct_whenFail() {
+		CatalogEntity catalogEntity = new CatalogEntity();
+		catalogEntity.setProductId("1");
+		catalogEntity.setProductDescription("AB");
+		Mockito.when(catalogService.findById(catalogEntity.getProductId())).thenReturn(null);
+		Mockito.when(catalogService.delete(catalogEntity.getProductId())).thenReturn(Mono.empty());
+		
+		webTestClient.delete().uri("/e-commerce/catalog/deleteProduct/" + catalogEntity.getProductId()).exchange().expectStatus()
+		.is5xxServerError();
+	}
 
-		Mockito.when(catalogService.updateProduct(user, "1")).thenReturn(Mono.just(user));
+	@Test
+	public void testUpdateProduct_whenSuccess() {
+		CatalogEntity catalogEntity = new CatalogEntity();
+		catalogEntity.setProductId("1");
+		catalogEntity.setProductDescription("AB");
 
-		webTestClient.put().uri("/e-commerce/catalog/updateProduct/" + user.getProductId())
-				.contentType(MediaType.APPLICATION_JSON).body(Mono.just(user), CatalogEntity.class).exchange()
+		Mockito.when(catalogService.findById(catalogEntity.getProductId())).thenReturn(Flux.just(catalogEntity));
+
+		Mockito.when(catalogService.updateProduct(catalogEntity, "1")).thenReturn(Mono.just(catalogEntity));
+
+		webTestClient.put().uri("/e-commerce/catalog/updateProduct/" + catalogEntity.getProductId())
+				.contentType(MediaType.APPLICATION_JSON).body(Mono.just(catalogEntity), CatalogEntity.class).exchange()
 				.expectStatus().isOk();
 
+	}
+	@Test
+	public void testUpdateProduct_whenFail() {
+		CatalogEntity catalogEntity = new CatalogEntity();
+		catalogEntity.setProductId("1");
+		catalogEntity.setProductDescription("AB");
+		
+		Mockito.when(catalogService.findById(catalogEntity.getProductId())).thenReturn(Flux.just(catalogEntity));
+		
+		Mockito.when(catalogService.updateProduct(catalogEntity, "1")).thenReturn(Mono.just(catalogEntity));
+		
+		webTestClient.put().uri("/e-commerce/catalog/updateProduct/" + catalogEntity.getProductId())
+		.contentType(MediaType.APPLICATION_JSON).body(Mono.just(catalogEntity), CatalogEntity.class).exchange()
+		.expectStatus().is5xxServerError();
+		
 	}
 
 	@Test
