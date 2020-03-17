@@ -12,19 +12,45 @@ import reactor.core.publisher.Mono;
 
 public interface CatalogService {
 
-    Mono<CatalogEntity> addProduct(CatalogEntity createOrders);
+	/**
+	 * @param catalogEntity
+	 * @return CatalogEntity
+	 */
+	Mono<CatalogEntity> addProduct(CatalogEntity catalogEntity);
 
-    Mono<CatalogEntity> updateProduct(CatalogEntity createOrders, String id);
+	/**
+	 * @param createOrders
+	 * @param id
+	 * @return CatalogEntity
+	 */
+	Mono<CatalogEntity> updateProduct(CatalogEntity createOrders, String id);
 
-    Flux<CatalogEntity> findAllProduct();
+	/**
+	 * @return CatalogEntity
+	 */
+	Flux<CatalogEntity> findAllProduct();
 
-    Mono<CatalogEntity> findProductById(String id);
+	/**
+	 * @param id
+	 * @return CatalogEntity
+	 */
+	Mono<CatalogEntity> findProductById(String id);
 
-   
+	/**
+	 * @param id
+	 * @return CatalogEntity
+	 */
+	Mono<CatalogEntity> delete(String id);
 
-    Mono<Boolean> delete(String id);
-    
-    Integer checkInventory();
-    
-   List<InventoryDetails> checkAllInventoryQuantity();
+	/**
+	 * @return CatalogEntity
+	 */
+	InventoryModel checkInventory();
+
+	List<InventoryDetails> checkAllInventoryQuantity();
+
+	/**
+	 * @return CatalogEntity
+	 */
+	CatalogEntity getProductData();
 }

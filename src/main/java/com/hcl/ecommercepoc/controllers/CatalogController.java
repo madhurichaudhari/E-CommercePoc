@@ -118,7 +118,7 @@ public class CatalogController {
 	@ResponseStatus(HttpStatus.OK)
 	public Mono<ResponseEntity<?>> delete(@PathVariable String productId) {
 		// return catalogService.delete(productId);
-		Mono<Boolean> catalogData = catalogService.delete(productId);
+		Mono<CatalogEntity> catalogData = catalogService.delete(productId);
 		
 		return catalogData.map(t -> {
 			return new ResponseEntity<Object>(new ApiResponseModel(true, AppConstant.PRODUCT_DELETED, t, 200),

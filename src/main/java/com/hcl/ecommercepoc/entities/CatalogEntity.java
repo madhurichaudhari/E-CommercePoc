@@ -33,6 +33,10 @@ public class CatalogEntity {
 	private String createdDate;
 	private String updatedDate;
 
+	/**
+	 * @param object
+	 * @param string
+	 */
 	/*
 	 * private ProductCategoryEntity productCategory;
 	 * 
@@ -40,6 +44,19 @@ public class CatalogEntity {
 	 * productCategory; } public void setProductCategoryEntity(ProductCategoryEntity
 	 * productCategoryEntity) { this.productCategory = productCategoryEntity; }
 	 */
+
+	public CatalogEntity(String id, String productName) {
+		this.productId=id;
+		this.productName=productName;		
+		// TODO Auto-generated constructor stub
+	}
+	
+	/**
+	 * 
+	 */
+	public CatalogEntity() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public Integer getQuantity() {
 		return quantity;

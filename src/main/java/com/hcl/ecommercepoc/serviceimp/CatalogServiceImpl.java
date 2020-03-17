@@ -54,8 +54,6 @@ public class CatalogServiceImpl implements CatalogService {
 
 			catalogList.map(it -> inventoryList.get(count).getQuantity());
 
-			System.out.println("count:::" + count);
-			System.out.println("catalogList:::" + catalogList.collectList());
 		}
 
 		catalogRepository.saveAll(catalogList);
@@ -76,16 +74,14 @@ public class CatalogServiceImpl implements CatalogService {
 	}
 
 	@Override
-	public Mono<Boolean> delete(String id) {
-		Mono<Boolean> fallback = Mono.error(new Exception(AppConstant.CHECK_NOT_PRODUCT_ID + id));
-		return findProductById(id).doOnSuccess(blog -> {
-			// blog.setDelete(true);
-			catalogRepository.deleteById(id).subscribe();
-		}).flatMap(blog -> Mono.just(Boolean.TRUE)).switchIfEmpty(fallback);
+	public Mono<CatalogEntity> delete(String id) {
+		 return this.catalogRepository
+		            .findById(id)
+		            .flatMap(p -> catalogRepository.deleteById(p.getProductId()).thenReturn(p));
 	}
 
 	@Override
-	public Integer checkInventory() {
+	public InventoryModel checkInventory() {
 
 		/*
 		 * InventoryModel inventoryModel = new RestTemplate()
@@ -101,7 +97,7 @@ public class CatalogServiceImpl implements CatalogService {
 		InventoryModel inventoryResponse = new Gson().fromJson(json, InventoryModel.class);
 
 		System.out.println("inventoryModel" + inventoryResponse);
-		return inventoryResponse.getQuantityModel().getQuantity();
+		return inventoryResponse;
 
 		// return inventoryModel.getQuantityModel().getQuantity();
 	}
@@ -115,18 +111,15 @@ public class CatalogServiceImpl implements CatalogService {
 		 * AllInventoryModel.class);
 		 */
 
-		List<Integer> allInventoryList = new ArrayList<Integer>();
-		List<InventoryDetails> allInventoryDetailsList = new ArrayList<InventoryDetails>();
 
 		String json = "  {\r\n" + "    \"dataArray\": [\r\n" + "        {\r\n" + "            \"id\": 1,\r\n"
-				+ "            \"productID\": \"102\",\r\n" + "            \"quantity\": 2\r\n" + "        },\r\n"
+				+ "            \"productID\": \"102\",\r\n" + "            \"quantity\": 1\r\n" + "        },\r\n"
 				+ "        {\r\n" + "            \"id\": 2,\r\n" + "            \"productID\": \"102\",\r\n"
 				+ "            \"quantity\": 2\r\n" + "        },\r\n" + "        {\r\n" + "            \"id\": 3,\r\n"
 				+ "            \"productID\": \"102\",\r\n" + "            \"quantity\": 2\r\n" + "        }\r\n"
 				+ "  \r\n" + "    ],\r\n" + "    \"message\": \"Success\",\r\n" + "    \"status\": true,\r\n"
 				+ "    \"statusCode\": 200\r\n" + "}\r\n" + "";
 
-		Flux<CatalogEntity> allProductList = catalogRepository.findAll();
 
 		AllInventoryModel inventoryResponse = new Gson().fromJson(json, AllInventoryModel.class);
 
@@ -135,6 +128,15 @@ public class CatalogServiceImpl implements CatalogService {
 
 		return inventoryResponse.getDataArray();
 
+	}
+
+	@Override
+	public CatalogEntity getProductData() {
+		CatalogEntity catalogEntity = new CatalogEntity();
+		catalogEntity.setProductId("1");
+		catalogEntity.setProductDescription("TV for entertainment");
+		catalogEntity.setProductName("TV");
+		return catalogEntity;
 	}
 
 }
