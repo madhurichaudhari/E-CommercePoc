@@ -16,7 +16,7 @@ public class AppConstant {
 	
 	
 	public static final String URL = "http://10.110.244.83:7001/inventory/Item/102";
-	public static final String CHECK_PRODUCT_QUANTITY = "No Product found with Id: ";
+	public static final String CHECK_NOT_PRODUCT_ID = "No Product found with Id: ";
 	public static final String PRODUCT_UPDATED = "Product has been  updated sucessfully";
 	public static final String PRODUCT_DELETED = "Product has been deleted sucessfully:";
 	public static final String PRODUCT_ADDED = "Product has been  added sucessfully";

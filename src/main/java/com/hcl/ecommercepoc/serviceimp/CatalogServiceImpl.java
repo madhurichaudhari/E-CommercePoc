@@ -19,6 +19,10 @@ import com.hcl.ecommercepoc.utils.AppConstant;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * @author MadhuriC
+ *
+ */
 @Service
 public class CatalogServiceImpl implements CatalogService {
 
@@ -27,73 +31,54 @@ public class CatalogServiceImpl implements CatalogService {
 
 	@Override
 	public Mono<CatalogEntity> addProduct(CatalogEntity catalogEntity) {
-		 Mono<CatalogEntity> fallback = Mono.error(new Exception(AppConstant.CHECK_PRODUCT_QUANTITY + catalogEntity));
-		return catalogRepository.save(catalogEntity).switchIfEmpty(fallback);
+		return catalogRepository.save(catalogEntity)
+				.switchIfEmpty(Mono.error(new Exception(AppConstant.CATEGORY_ADDED)));
 	}
 
 	@Override
 	public Flux<CatalogEntity> findAllProduct() {
-		
-		return catalogRepository.findAll();
+		return catalogRepository.findAll().switchIfEmpty(Flux.error(new Exception(AppConstant.CHECK_NOT_PRODUCT_ID)));
 	}
-	
-	
-	
-	public   Flux<CatalogEntity> findAllProductTest(){
-		
-		
+
+	/**
+	 * @return
+	 */
+	public Flux<CatalogEntity> findAllProductTest() {
+
 		List<InventoryDetails> inventoryList = checkAllInventoryQuantity();
 		Flux<CatalogEntity> catalogList = null;
 		for (int i = 0; i < inventoryList.size(); i++) {
 			final int count = 0 + i;
 			Integer qunatity = inventoryList.get(i).getQuantity();
-			 catalogList = catalogRepository.findAll();
-			 
+			catalogList = catalogRepository.findAll();
+
 			catalogList.map(it -> inventoryList.get(count).getQuantity());
-			
+
 			System.out.println("count:::" + count);
 			System.out.println("catalogList:::" + catalogList.collectList());
 		}
 
 		catalogRepository.saveAll(catalogList);
 		return catalogList;
-		
+
 	}
 
 	@Override
-	public Mono<CatalogEntity> updateProduct(CatalogEntity productOrders, String id) {
-		 Mono<CatalogEntity> fallback = Mono.error(new Exception(AppConstant.CHECK_PRODUCT_QUANTITY + id));
-
-		return findOne(id).doOnSuccess(productOrders1 -> {
-			catalogRepository.save(productOrders);
-		});
+	public Mono<CatalogEntity> updateProduct(CatalogEntity catalogEntity, String id) {
+		return catalogRepository.findById(id).map(p -> catalogEntity).flatMap(this.catalogRepository::save);
 	}
 
 	@Override
-	public Mono<CatalogEntity> findOne(String id) {
-		int quantity = checkInventory();
-		System.out.println("quantity::" + quantity);
+	public Mono<CatalogEntity> findProductById(String id) {
+		return catalogRepository.findById(id)
+				.switchIfEmpty(Mono.error(new Exception(AppConstant.CHECK_NOT_PRODUCT_ID + id)));
 
-		if (quantity > 0) {
-			return catalogRepository.findById(id)
-					.switchIfEmpty(Mono.error(new Exception(AppConstant.CHECK_PRODUCT_QUANTITY + id)));
-		} else {
-
-			return catalogRepository.findById(id)
-					.switchIfEmpty(Mono.error(new Exception(AppConstant.CHECK_PRODUCT_QUANTITY + id)));
-		}
-	}
-
-	@Override
-	public Flux<CatalogEntity> findById(String Id) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
 	public Mono<Boolean> delete(String id) {
-		 Mono<Boolean> fallback = Mono.error(new Exception(AppConstant.CHECK_PRODUCT_QUANTITY + id));
-		return findOne(id).doOnSuccess(blog -> {
+		Mono<Boolean> fallback = Mono.error(new Exception(AppConstant.CHECK_NOT_PRODUCT_ID + id));
+		return findProductById(id).doOnSuccess(blog -> {
 			// blog.setDelete(true);
 			catalogRepository.deleteById(id).subscribe();
 		}).flatMap(blog -> Mono.just(Boolean.TRUE)).switchIfEmpty(fallback);
