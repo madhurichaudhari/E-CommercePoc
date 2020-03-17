@@ -41,9 +41,6 @@ public class CatalogController {
 
 	/**
 	 * This api is used for add product of catalog
-	 * 
-	 * @param catalogEntity
-	 * 
 	 * @param CatalogEntity
 	 * @return Mono<CatalogEntity>
 	 */
@@ -102,7 +99,7 @@ public class CatalogController {
 	public Mono<ResponseEntity<?>> findOne(@PathVariable String productId) {
 		// return catalogService.findOne(productId);
 
-		Mono<CatalogEntity> catalogData = catalogService.findOne(productId);
+		Mono<CatalogEntity> catalogData = catalogService.findProductById(productId);
 		return catalogData.map(t -> {
 			return new ResponseEntity<Object>(new ApiResponseModel(true, AppConstant.PRODUCT_FETCH_DETAILS, t, 200),
 					HttpStatus.OK);
@@ -129,17 +126,6 @@ public class CatalogController {
 
 		});
 		}
-
-	/**
-	 * This api is used for checking connection data from APi Gateway
-	 * 
-	 * @return data
-	 */
-
-	/*
-	 * @GetMapping("/getConfig") public String demo() { return "madhuri" +
-	 * configuration.getMaximum(); }
-	 */
 
 	/**
 	 * This api is used for checking connection data from APi Gateway

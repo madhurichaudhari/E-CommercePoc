@@ -18,9 +18,9 @@ public interface CatalogService {
 
     Flux<CatalogEntity> findAllProduct();
 
-    Mono<CatalogEntity> findOne(String id);
+    Mono<CatalogEntity> findProductById(String id);
 
-    Flux<CatalogEntity> findById(String title);
+   
 
     Mono<Boolean> delete(String id);
     
