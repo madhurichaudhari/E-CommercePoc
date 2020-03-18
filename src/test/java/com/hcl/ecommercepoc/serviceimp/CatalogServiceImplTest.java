@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import com.hcl.ecommercepoc.entities.CatalogEntity;
+import com.hcl.ecommercepoc.entities.Catalog;
 import com.hcl.ecommercepoc.repositories.CatalogRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,25 +25,25 @@ class CatalogServiceImplTest {
 
 	@Test
 	public void givenProduct_whenSave_thenSaveProduct_WhenSucces() {
-		CatalogEntity catalogEntity = new CatalogEntity();
+		Catalog catalogEntity = new Catalog();
 		catalogEntity.setProductId("1");
 		catalogEntity.setProductDescription("AB");
-		Mono<CatalogEntity> catalogData = catalogServiceImpl.addProduct(catalogEntity);
+		Mono<Catalog> catalogData = catalogServiceImpl.addProduct(catalogEntity);
 		StepVerifier.create(catalogData).assertNext(account -> assertNotNull(account.getProductId())).expectComplete()
 				.verify();
 	}
 
 	@Test
 	public void givenProduct_whenSave_thenFetchProduct_WhenSuccess() {
-		CatalogEntity catalogEntity = new CatalogEntity();
+		Catalog catalogEntity = new Catalog();
 		catalogEntity.setProductId("1");
 		catalogEntity.setProductDescription("TV for entertainment");
 		catalogEntity.setProductName("TV");
-		Flux<CatalogEntity> saved = catalogRepository.saveAll(Flux.just(catalogEntity));
+		Flux<Catalog> saved = catalogRepository.saveAll(Flux.just(catalogEntity));
 
-		Flux<CatalogEntity> composite = catalogServiceImpl.findAllProduct().thenMany(saved);
+		Flux<Catalog> composite = catalogServiceImpl.findAllProduct().thenMany(saved);
 
-		Predicate<CatalogEntity> match = catalogEntity1 -> saved.any(saveItem -> saveItem.equals(catalogEntity))
+		Predicate<Catalog> match = catalogEntity1 -> saved.any(saveItem -> saveItem.equals(catalogEntity))
 				.block();
 
 		StepVerifier.create(composite).expectNextMatches(match).verifyComplete();

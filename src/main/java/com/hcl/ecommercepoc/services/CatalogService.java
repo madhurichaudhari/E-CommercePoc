@@ -2,7 +2,7 @@ package com.hcl.ecommercepoc.services;
 
 import java.util.List;
 
-import com.hcl.ecommercepoc.entities.CatalogEntity;
+import com.hcl.ecommercepoc.entities.Catalog;
 import com.hcl.ecommercepoc.responsemodels.ApiResponseModel;
 import com.hcl.ecommercepoc.responsemodels.inventory.InventoryDetails;
 import com.hcl.ecommercepoc.responsemodels.inventory.InventoryModel;
@@ -12,13 +12,13 @@ import reactor.core.publisher.Mono;
 
 public interface CatalogService {
 
-    Mono<CatalogEntity> addProduct(CatalogEntity createOrders);
+    Mono<Catalog> addProduct(Catalog createOrders);
 
-    Mono<CatalogEntity> updateProduct(CatalogEntity createOrders, String id);
+    Mono<Catalog> updateProduct(Catalog createOrders, String id);
 
-    Flux<CatalogEntity> findAllProduct();
+    Flux<Catalog> findAllProduct();
 
-    Mono<CatalogEntity> findProductById(String id);
+    Mono<Catalog> findProductById(String id);
 
    
 

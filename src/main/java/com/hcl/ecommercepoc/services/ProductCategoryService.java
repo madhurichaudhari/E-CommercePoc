@@ -1,21 +1,21 @@
 package com.hcl.ecommercepoc.services;
 
-import com.hcl.ecommercepoc.entities.ProductCategoryEntity;
+import com.hcl.ecommercepoc.entities.ProductCategory;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface ProductCategoryService {
 
-    Mono<ProductCategoryEntity> addCategory(ProductCategoryEntity createCategory);
+    Mono<ProductCategory> addCategory(ProductCategory createCategory);
 
-    Mono<ProductCategoryEntity> updateCategory(ProductCategoryEntity createCategory, String id);
+    Mono<ProductCategory> updateCategory(ProductCategory createCategory, String id);
 
-    Flux<ProductCategoryEntity> findAll();
+    Flux<ProductCategory> findAll();
 
-    Mono<ProductCategoryEntity> findOne(String id);
+    Mono<ProductCategory> findOne(String id);
 
-    Flux<ProductCategoryEntity> findById(String title);
+    Flux<ProductCategory> findById(String title);
 
     Mono<Boolean> delete(String id);
 }

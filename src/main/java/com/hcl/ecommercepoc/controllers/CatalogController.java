@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
-import com.hcl.ecommercepoc.entities.CatalogEntity;
+import com.hcl.ecommercepoc.entities.Catalog;
 import com.hcl.ecommercepoc.responsemodels.ApiResponseModel;
 import com.hcl.ecommercepoc.services.CatalogService;
 import com.hcl.ecommercepoc.utils.AppConstant;
@@ -41,13 +42,13 @@ public class CatalogController {
 
 	/**
 	 * This api is used for add product of catalog
-	 * @param CatalogEntity
+	 * @param Catalog
 	 * @return Mono<CatalogEntity>
 	 */
 	@PostMapping("/addProduct")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Mono<ResponseEntity<?>> addProduct(@RequestBody CatalogEntity catalogEntity) {
-		Mono<CatalogEntity> catalogData = catalogService.addProduct(catalogEntity);
+	public Mono<ResponseEntity<?>> addProduct(@RequestBody Catalog catalogEntity) {
+		Mono<Catalog> catalogData = catalogService.addProduct(catalogEntity);
 		return catalogData.map(t -> {
 			return new ResponseEntity<Object>(new ApiResponseModel(true, AppConstant.PRODUCT_ADDED, t, 200),
 					HttpStatus.CREATED);
@@ -62,10 +63,10 @@ public class CatalogController {
 	 */
 
 	@PutMapping("/updateProduct/{productId}")
-	public Mono<ResponseEntity<?>> updateProduct(@RequestBody CatalogEntity catalogEntity,
+	public Mono<ResponseEntity<?>> updateProduct(@RequestBody Catalog catalogEntity,
 			@PathVariable String productId) {
 		// return catalogService.updateProduct(catalogEntity, productId);
-		Mono<CatalogEntity> catalogData = catalogService.updateProduct(catalogEntity, productId);
+		Mono<Catalog> catalogData = catalogService.updateProduct(catalogEntity, productId);
 		return catalogData.map(t -> {
 			return new ResponseEntity<Object>(new ApiResponseModel(true, AppConstant.PRODUCT_UPDATED, t, 200),
 					HttpStatus.OK);
@@ -81,10 +82,10 @@ public class CatalogController {
 	 */
 
 	@GetMapping("/fetchAllProduct")
-	public Flux<CatalogEntity> findAll() {
+	public Flux<Catalog> findAll() {
 		// return catalogService.findAll();
 
-		Flux<CatalogEntity> catalogData = catalogService.findAllProduct();
+		Flux<Catalog> catalogData = catalogService.findAllProduct();
 		return catalogData;
 		
 	}
@@ -99,7 +100,7 @@ public class CatalogController {
 	public Mono<ResponseEntity<?>> findOne(@PathVariable String productId) {
 		// return catalogService.findOne(productId);
 
-		Mono<CatalogEntity> catalogData = catalogService.findProductById(productId);
+		Mono<Catalog> catalogData = catalogService.findProductById(productId);
 		return catalogData.map(t -> {
 			return new ResponseEntity<Object>(new ApiResponseModel(true, AppConstant.PRODUCT_FETCH_DETAILS, t, 200),
 					HttpStatus.OK);
@@ -149,12 +150,12 @@ public class CatalogController {
 	 */
 	@PostMapping(value = "/bizagi/sendmsg")
 	public ResponseEntity<Mono<?>> sendMessageToQueue(@RequestHeader("Authorization") String token,
-			@RequestBody CatalogEntity bizagiPost) {
+			@RequestBody Catalog bizagiPost) {
          System.out.println("token::" + token);
 		boolean tokenStatus = CommonUtil.validateToken(token);
 
 		if (tokenStatus) {
-			Mono<CatalogEntity> catalogData = catalogService.addProduct(bizagiPost);
+			Mono<Catalog> catalogData = catalogService.addProduct(bizagiPost);
 			   return new ResponseEntity<>(Mono.just(new ApiResponseModel(true, AppConstant.PRODUCT_DELETED, catalogData, 200)), HttpStatus.OK);
 
 	
@@ -173,14 +174,18 @@ public class CatalogController {
 	 * 
 	 * @return it will return data for Jull Api
 	 */
-	/*
-	 * @GetMapping("/getZuulTest") public String getProducerTest() { String baseUrl
-	 * = "http://10.110.244.179:8011/producer/jullTest";
-	 * System.out.println("baseUrl>>>>>>" + baseUrl); RestTemplate restTemplate =
-	 * new RestTemplate(); String data = restTemplate.getForObject(baseUrl,
-	 * String.class); System.out.println("dataDemo>>>>>>" + data); return data;
-	 * 
-	 * }
-	 */
+	
+	 
+	  
+	@GetMapping("/getZuul2Test")
+	public String demoZuulTest() {
+		String baseUrl = "http://10.110.244.179:8011/role-based-oauth-user-service/users/hello-again";
+		System.out.println("baseUrl>>>>>>" + baseUrl);
+		RestTemplate restTemplate = new RestTemplate();
+		String data = restTemplate.getForObject(baseUrl, String.class);
+		System.out.println("dataDemo>>>>>>" + data);
+		return data;
+	}
+	 
 
 }

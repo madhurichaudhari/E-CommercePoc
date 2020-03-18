@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import com.hcl.ecommercepoc.entities.CatalogEntity;
+import com.hcl.ecommercepoc.entities.Catalog;
 import com.hcl.ecommercepoc.services.CatalogService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -23,29 +23,29 @@ class CatalogControllerTest {
 
 	@Test
 	public void testAddProduct_whenSuccess() {
-		CatalogEntity catalogEntity = new CatalogEntity();
+		Catalog catalogEntity = new Catalog();
 		catalogEntity.setProductId("1");
 		catalogEntity.setProductDescription("AB");
-		Mockito.when(catalogService.addProduct(Mockito.any(CatalogEntity.class))).thenReturn(Mono.just(catalogEntity));
+		Mockito.when(catalogService.addProduct(Mockito.any(Catalog.class))).thenReturn(Mono.just(catalogEntity));
 		webTestClient.post().uri("/e-commerce/catalog/addProduct").contentType(MediaType.APPLICATION_JSON)
-				.body(Mono.just(catalogEntity), CatalogEntity.class).exchange().expectStatus().isCreated();
+				.body(Mono.just(catalogEntity), Catalog.class).exchange().expectStatus().isCreated();
 
 	}
 
 	@Test
 	public void testaddProduct_whenFail() {
-		CatalogEntity catalogEntity = new CatalogEntity();
+		Catalog catalogEntity = new Catalog();
 		catalogEntity.setProductId("1");
 		catalogEntity.setProductDescription("AB");
-		Mockito.when(catalogService.addProduct(Mockito.any(CatalogEntity.class))).thenReturn((null));
+		Mockito.when(catalogService.addProduct(Mockito.any(Catalog.class))).thenReturn((null));
 		webTestClient.post().uri("/e-commerce/catalog/addProduct").contentType(MediaType.APPLICATION_JSON)
-				.body(Mono.just(catalogEntity), CatalogEntity.class).exchange().expectStatus().is5xxServerError();
+				.body(Mono.just(catalogEntity), Catalog.class).exchange().expectStatus().is5xxServerError();
 
 	}
 
 	@Test
 	public void testFetchProduct_whenSuccess() {
-		CatalogEntity catalogEntity = new CatalogEntity();
+		Catalog catalogEntity = new Catalog();
 		catalogEntity.setProductId("1");
 		catalogEntity.setProductDescription("AB");
 		Mockito.when(catalogService.findProductById(catalogEntity.getProductId())).thenReturn(Mono.just(catalogEntity));
@@ -56,7 +56,7 @@ class CatalogControllerTest {
 	//fetch
 	@Test
 	public void testFetchProduct_whenFail() {
-		CatalogEntity catalogEntity = new CatalogEntity();
+		Catalog catalogEntity = new Catalog();
 		catalogEntity.setProductId("1");
 		catalogEntity.setProductDescription("AB");
 		Mockito.when(catalogService.findProductById(catalogEntity.getProductId())).thenReturn(null);
@@ -68,7 +68,7 @@ class CatalogControllerTest {
 
 	@Test
 	public void testFetchAllProduct_whenSuccess() {
-		CatalogEntity catalogEntity = new CatalogEntity();
+		Catalog catalogEntity = new Catalog();
 		catalogEntity.setProductId("1");
 		catalogEntity.setProductDescription("AB");
 		Mockito.when(catalogService.findAllProduct()).thenReturn(Flux.just(catalogEntity));
@@ -84,7 +84,7 @@ class CatalogControllerTest {
 
 	@Test
 	public void testDeleteProduct_whenSuccess() {
-		CatalogEntity catalogEntity = new CatalogEntity();
+		Catalog catalogEntity = new Catalog();
 		catalogEntity.setProductId("1");
 		catalogEntity.setProductDescription("AB");
 		Mockito.when(catalogService.findProductById(catalogEntity.getProductId())).thenReturn(Mono.just(catalogEntity));
@@ -96,7 +96,7 @@ class CatalogControllerTest {
 	//fail
 	@Test
 	public void testDeleteProduct_whenFail() {
-		CatalogEntity catalogEntity = new CatalogEntity();
+		Catalog catalogEntity = new Catalog();
 		catalogEntity.setProductId("1");
 		catalogEntity.setProductDescription("AB");
 		Mockito.when(catalogService.findProductById(catalogEntity.getProductId())).thenReturn(null);
@@ -109,7 +109,7 @@ class CatalogControllerTest {
 	@Test
 	public void testUpdateProduct_whenSuccess() {
 		
-		CatalogEntity catalogEntity = new CatalogEntity();
+		Catalog catalogEntity = new Catalog();
 		catalogEntity.setProductId("1");
 		catalogEntity.setProductDescription("AB");
 
@@ -118,13 +118,13 @@ class CatalogControllerTest {
 		Mockito.when(catalogService.updateProduct(catalogEntity,catalogEntity.getProductId())).thenReturn(Mono.just(catalogEntity));
 
 		webTestClient.put().uri("/e-commerce/catalog/updateProduct/" + catalogEntity.getProductId())
-				.contentType(MediaType.APPLICATION_JSON).body(Mono.just(catalogEntity), CatalogEntity.class).exchange()
+				.contentType(MediaType.APPLICATION_JSON).body(Mono.just(catalogEntity), Catalog.class).exchange()
 				.expectStatus().is5xxServerError();
 
 	}
 	@Test
 	public void testUpdateProduct_whenFail() {
-		CatalogEntity catalogEntity = new CatalogEntity();
+		Catalog catalogEntity = new Catalog();
 		catalogEntity.setProductId("1");
 		catalogEntity.setProductDescription("AB");
 		
@@ -133,7 +133,7 @@ class CatalogControllerTest {
 		Mockito.when(catalogService.updateProduct(catalogEntity, "1")).thenReturn(Mono.just(catalogEntity));
 		
 		webTestClient.put().uri("/e-commerce/catalog/updateProduct/" + catalogEntity.getProductId())
-		.contentType(MediaType.APPLICATION_JSON).body(Mono.just(catalogEntity), CatalogEntity.class).exchange()
+		.contentType(MediaType.APPLICATION_JSON).body(Mono.just(catalogEntity), Catalog.class).exchange()
 		.expectStatus().is5xxServerError();
 		
 	}

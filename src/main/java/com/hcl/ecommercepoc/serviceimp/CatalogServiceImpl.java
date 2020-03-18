@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
-import com.hcl.ecommercepoc.entities.CatalogEntity;
+import com.hcl.ecommercepoc.entities.Catalog;
 import com.hcl.ecommercepoc.repositories.CatalogRepository;
 import com.hcl.ecommercepoc.responsemodels.inventory.AllInventoryModel;
 import com.hcl.ecommercepoc.responsemodels.inventory.InventoryDetails;
@@ -30,23 +30,23 @@ public class CatalogServiceImpl implements CatalogService {
 	private CatalogRepository catalogRepository;
 
 	@Override
-	public Mono<CatalogEntity> addProduct(CatalogEntity catalogEntity) {
+	public Mono<Catalog> addProduct(Catalog catalogEntity) {
 		return catalogRepository.save(catalogEntity)
 				.switchIfEmpty(Mono.error(new Exception(AppConstant.CATEGORY_ADDED)));
 	}
 
 	@Override
-	public Flux<CatalogEntity> findAllProduct() {
+	public Flux<Catalog> findAllProduct() {
 		return catalogRepository.findAll().switchIfEmpty(Flux.error(new Exception(AppConstant.CHECK_NOT_PRODUCT_ID)));
 	}
 
 	/**
 	 * @return
 	 */
-	public Flux<CatalogEntity> findAllProductTest() {
+	public Flux<Catalog> findAllProductTest() {
 
 		List<InventoryDetails> inventoryList = checkAllInventoryQuantity();
-		Flux<CatalogEntity> catalogList = null;
+		Flux<Catalog> catalogList = null;
 		for (int i = 0; i < inventoryList.size(); i++) {
 			final int count = 0 + i;
 			Integer qunatity = inventoryList.get(i).getQuantity();
@@ -64,12 +64,12 @@ public class CatalogServiceImpl implements CatalogService {
 	}
 
 	@Override
-	public Mono<CatalogEntity> updateProduct(CatalogEntity catalogEntity, String id) {
+	public Mono<Catalog> updateProduct(Catalog catalogEntity, String id) {
 		return catalogRepository.findById(id).map(p -> catalogEntity).flatMap(this.catalogRepository::save);
 	}
 
 	@Override
-	public Mono<CatalogEntity> findProductById(String id) {
+	public Mono<Catalog> findProductById(String id) {
 		return catalogRepository.findById(id)
 				.switchIfEmpty(Mono.error(new Exception(AppConstant.CHECK_NOT_PRODUCT_ID + id)));
 
@@ -126,7 +126,7 @@ public class CatalogServiceImpl implements CatalogService {
 				+ "  \r\n" + "    ],\r\n" + "    \"message\": \"Success\",\r\n" + "    \"status\": true,\r\n"
 				+ "    \"statusCode\": 200\r\n" + "}\r\n" + "";
 
-		Flux<CatalogEntity> allProductList = catalogRepository.findAll();
+		Flux<Catalog> allProductList = catalogRepository.findAll();
 
 		AllInventoryModel inventoryResponse = new Gson().fromJson(json, AllInventoryModel.class);
 

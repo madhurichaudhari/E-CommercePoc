@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "product_category_tbl")
-public class ProductCategoryEntity {
+public class ProductCategory {
 	
 	@Id 
 	private String categoryId;

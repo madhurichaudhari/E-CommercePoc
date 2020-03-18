@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  *
  */
 @Document(collection = "Catalog_tbl")
-public class CatalogEntity {
+public class Catalog {
 
 	@Id
 	private String productId;
