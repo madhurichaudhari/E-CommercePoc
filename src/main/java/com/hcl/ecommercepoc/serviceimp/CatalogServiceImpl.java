@@ -48,6 +48,25 @@ public class CatalogServiceImpl implements CatalogService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	public Flux<Catalog> findAllProductTest() {
+
+		List<InventoryDetails> inventoryList = checkAllInventoryQuantity();
+		Flux<Catalog> catalogList = null;
+		for (int i = 0; i < inventoryList.size(); i++) {
+			final int count = 0 + i;
+			Integer qunatity = inventoryList.get(i).getQuantity();
+			catalogList = catalogRepository.findAll();
+
+			catalogList.map(it -> inventoryList.get(count).getQuantity());
+
+		}
+
+		catalogRepository.saveAll(catalogList);
+		return catalogList;
+
+	}
     
 
     @Override
